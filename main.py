@@ -10,20 +10,51 @@ banner="""
 ██╔═══╝ ██║   ██║██║╚██╔╝██║
 ██║     ╚██████╔╝██║ ╚═╝ ██║
 ╚═╝      ╚═════╝ ╚═╝     ╚═╝"""
-working="""
-██╗    ██╗ ██████╗ ██████╗ ██╗  ██╗██╗███╗   ██╗ ██████╗ 
-██║    ██║██╔═══██╗██╔══██╗██║ ██╔╝██║████╗  ██║██╔════╝ 
-██║ █╗ ██║██║   ██║██████╔╝█████╔╝ ██║██╔██╗ ██║██║  ███╗
-██║███╗██║██║   ██║██╔══██╗██╔═██╗ ██║██║╚██╗██║██║   ██║
-╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗██║██║ ╚████║╚██████╔╝
- ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ \n"""
-rest="""
-██████╗ ███████╗███████╗████████╗
-██╔══██╗██╔════╝██╔════╝╚══██╔══╝
-██████╔╝█████╗  ███████╗   ██║   
-██╔══██╗██╔══╝  ╚════██║   ██║   
-██║  ██║███████╗███████║   ██║   
-╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝ \n"""
+alasArriba = """
+     ▄   ▄
+ ▄█▄ █▀█▀█ ▄█▄
+▀▀████▄█▄████▀▀
+     ▀█▀█▀
+"""
+alasHorizontales = """
+     ▄   ▄
+     █▀█▀█ 
+▀▀████▄█▄████▀▀
+     ▀█▀█▀
+"""
+alasAbajo = """
+     ▄   ▄
+     █▀█▀█ 
+▀▀████▄█▄████▀▀
+   ▀ ▀█▀█▀ ▀
+"""
+colaAbajo = """
+▄   ▄
+█▀█▀█
+█▄█▄█
+ ███  ▄▄
+ ████▐█ █
+ ████   █
+ ▀▀▀▀▀▀▀
+"""
+colaMedio = """
+▄   ▄
+█▀█▀█
+█▄█▄█  ▄▄ 
+ ███    █
+ ████   █
+ ████   █
+ ▀▀▀▀▀▀▀
+"""
+colaArriba = """
+▄   ▄
+█▀█▀█
+█▄█▄█   █ 
+ ███    █
+ ████   █
+ ████   █
+ ▀▀▀▀▀▀▀
+"""
 def clear():
     if(str(platform.system())=='Windows'):
         system('cls')
@@ -36,17 +67,19 @@ def normalizarFormato(numTime):
         return f'{str(numTime)}'
 def sound():
     try:
-        system('/mpv noti.mp3')
+        system('mpv noti.mp3')
     except:
         pass
-def cronometro(mesagge,minuts,color):
+def cronometro(_list,minuts,color):
     comienzo = datetime.now()
     while True:
-        clear()
         now = datetime.now()
         diferencia = timedelta(days=comienzo.day,hours=comienzo.hour,minutes=comienzo.minute,seconds=comienzo.second) 
-        print(color+mesagge+(now-diferencia).strftime("%M:%S")+Fore.RESET)
-        sleep(0.5)
+        for e in _list[:-1]:
+            clear()
+            print(color+e+(now-diferencia).strftime("%M:%S")+Fore.RESET)
+            sleep(0.5)
+        _list.reverse()
         if(now.strftime("%Y-%m-%d %H:%M:%S")==(comienzo+timedelta(minutes=minuts)).strftime("%Y-%m-%d %H:%M:%S")):
             sound()
             break
@@ -56,8 +89,10 @@ def main():
     work = int(input('[+] Ingresar los minutos de trabajo: '))
     chill = int(input('[+] Ingresar el tiempo de descanso: '))
     while True:
-        cronometro(working,work,Fore.GREEN)
-        cronometro(rest,chill,Fore.RED)
+        listAlas = list([alasArriba,alasHorizontales,alasAbajo])
+        listRest = list([colaAbajo,colaMedio,colaArriba])
+        cronometro(listAlas,work,Fore.GREEN)
+        cronometro(listRest,chill,Fore.RED)
         clear()
         if(input('Continuar?: ')!=('Y'or'Yes'or'y'or'yes')):
             break
