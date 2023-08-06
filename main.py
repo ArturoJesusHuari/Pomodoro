@@ -94,7 +94,7 @@ def main():
         cronometro(listAlas,work,Fore.GREEN)
         cronometro(listRest,chill,Fore.RED)
         clear()
-        if((input('Continuar?: ')) in ['Y','Yes','y','yes']):
+        if((input('Continuar?: ')) not in ['Y','Yes','y','yes']):
             break
 if __name__=='__main__':
     main()
