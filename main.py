@@ -78,7 +78,7 @@ def cronometro(_list,minuts,color):
         for e in _list[:-1]:
             clear()
             print(color+e+(now-diferencia).strftime("%M:%S")+Fore.RESET)
-            sleep(0.5)
+            sleep(0.3)
         _list.reverse()
         if(now.strftime("%Y-%m-%d %H:%M:%S")==(comienzo+timedelta(minutes=minuts)).strftime("%Y-%m-%d %H:%M:%S")):
             sound()
